@@ -1,0 +1,12 @@
+﻿@model IEnumerable<string>
+
+<div>
+    @if (!Model.Any())
+    {
+        @:no data
+    }
+    @foreach (var e in Model)
+    {
+        <p>@e</p>
+    }
+</div>

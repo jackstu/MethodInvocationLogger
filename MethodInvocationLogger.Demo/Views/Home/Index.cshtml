@@ -1,0 +1,188 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<table style="width: 100%">
+    <tr>
+        <td><b>Cyclic api caller thread</b></td>
+        <td><b>Put data to api client</b></td>
+        <td><b>Send some form</b></td>
+    </tr>
+    <tr>
+        <td>
+            <button onclick="enableCyclicApiCaller()">Enable</button><br/>
+            <button onclick="disableCyclicApiCaller()">Disable</button>
+        </td>
+        <td>
+            <form id="putDataToApiForm">
+                Data: <input type="text" id="data" value="some data"/><br />
+                <input type="submit" id="submit" value="Put"/>
+            </form>
+        </td>
+        <td>
+            <form id="someForm">
+                Title: <input type="text" id="title" value="some title"/><br/>
+                <input type="radio" name="formType" checked="checked" value="@MethodInvocationLogger.Demo.Controllers.FormType.SimpleForm"/>@MethodInvocationLogger.Demo.Controllers.FormType.SimpleForm<br/>
+                <input type="radio" name="formType" value="@MethodInvocationLogger.Demo.Controllers.FormType.AdvancedForm"/>@MethodInvocationLogger.Demo.Controllers.FormType.AdvancedForm<br/>
+                <input type="radio" name="formType" value="@MethodInvocationLogger.Demo.Controllers.FormType.FormABC"/>@MethodInvocationLogger.Demo.Controllers.FormType.FormABC<br/>
+                <input type="submit" id="submit2" value="Send form"/>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<hr />
+    <p><b>Business events log - refresh every 5s</b></p>
+    <div id="businessLog">no data</div>
+
+    <div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+    <hr />
+    <p><b>Performance log - refresh every 5s</b></p>
+    <div id="performanceLog">no data</div>
+    <hr />
+
+@section scripts
+{
+        <script>
+            $(document).ready(function () {
+
+                $('#putDataToApiForm').submit(function () {
+                    $.ajax({
+                        url: '@Url.Action("PutDataToApi")',
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({
+                            data: $('#data').val()
+                        })
+                    });
+                    return false;
+                });
+
+                $('#someForm').submit(function () {
+                    $.ajax({
+                        url: '@Url.Action("SendSomeForm")',
+                        type: "POST",
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        data: JSON.stringify({
+                            Title: $('#title').val(),
+                            FormType: $('input[name=formType]:checked').val()
+                        })
+                    });
+                    return false;
+                });
+            });
+
+            function enableCyclicApiCaller() {
+                $.post("@Url.Action("EnableCyclicApiCaller")");
+            }
+
+            function disableCyclicApiCaller() {
+                $.post("@Url.Action("DisableCyclicApiCaller")");
+            }
+            
+            function autoRefreshLog() {
+                $('#businessLog').load("@Url.Action("BusinessLog")");
+                $('#performanceLog').load("@Url.Action("PerformanceLog")");
+            }
+            var refreshId = setInterval(autoRefreshLog, 3000);
+
+            var series;
+            var lastSentDate = new Date();
+
+            function AddSeriesPoints(data, status) {
+                $.each(data, function (i, item) {
+                    var date = new Date(parseInt(item.Key.replace("/Date(", "").replace(")/", ""), 10));
+                    series.addPoint([date.getTime(), item.Value], true, true);
+                });
+            }
+
+            $(function () {
+                $(document).ready(function () {
+                    Highcharts.setOptions({
+                        global: {
+                            useUTC: false
+                        }
+                    });
+
+                    $('#container').highcharts({
+                        chart: {
+                            type: 'spline',
+                            animation: Highcharts.svg, // don't animate in old IE
+                            marginRight: 10,
+                            events: {
+                                load: function () {
+
+                                    // set up the updating of the chart each second
+                                    series = this.series[0];
+                                    setInterval(function () {
+
+                                        var currentTime = new Date();
+
+                                        $.ajax({
+                                            type: "GET",
+                                            url: "@Url.Action("PerformanceLogChartData")",
+                                            contentType: "application/json;",
+                                            data: { 'min': lastSentDate.toISOString(), 'max': currentTime.toISOString() },
+                                            dataType: "json",
+                                            success: AddSeriesPoints
+                                        });
+
+                                        lastSentDate = currentTime;
+                                    }, 1000);
+                                }
+                            }
+                        },
+                        title: {
+                            text: 'Performance monitor - ApiClient method durations'
+                        },
+                        xAxis: {
+                            type: 'datetime',
+                            tickPixelInterval: 150
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Value'
+                            },
+                            plotLines: [{
+                                value: 0,
+                                width: 1,
+                                color: '#808080'
+                            }]
+                        },
+                        tooltip: {
+                            formatter: function () {
+                                return '<b>' + this.series.name + '</b><br/>' +
+                                    Highcharts.dateFormat('%Y-%m-%d %H:%M:%S', this.x) + '<br/>' +
+                                    Highcharts.numberFormat(this.y, 2);
+                            }
+                        },
+                        legend: {
+                            enabled: false
+                        },
+                        exporting: {
+                            enabled: false
+                        },
+                        series: [{
+                            name: 'data',
+                            data: (function () {
+                                // generate an array of random data
+                                var data = [],
+                                    time = (new Date()).getTime(),
+                                    i;
+
+                                for (i = -19; i <= 0; i += 1) {
+                                    data.push({
+                                        x: time + i * 1000,
+                                        y: 0
+                                    });
+                                }
+                                return data;
+                            }())
+                        }]
+                    });
+                });
+            });
+        </script>
+    }

@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MethodInvocationLogger.Castle</id>
+    <version>1.21.0</version>
+    <title>Method invocation logger for Castle Windsor container</title>
+    <authors>Jacek Studzinski</authors>
+    <owners>Jacek Studzinski</owners>
+    <projectUrl>https://github.com/jackstu/MethodInvocationLogger</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Logging of method's executions in aspect approach for types registered in Windsor container</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>log aspect Cross-cutting concern castle windsor</tags>
+    <dependencies>
+      <dependency id="MethodInvocationLogger" version="1.21.0" />
+      <dependency id="Castle.Core" version="3.3.0" />
+      <dependency id="Castle.Windsor" version="3.3.0" />
+    </dependencies>
+  </metadata>
+</package>

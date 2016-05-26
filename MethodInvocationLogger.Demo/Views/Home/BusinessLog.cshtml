@@ -1,0 +1,13 @@
+﻿@using Newtonsoft.Json
+@model IEnumerable<MethodInvocationLogger.Demo.BusinessEvent>
+
+<div>
+    @if (!Model.Any())
+    {
+        @:no data
+    }
+    @foreach (var e in Model.OrderByDescending(e => e.Time))
+    {
+        <p>@e.Time <b>Event:</b> @e.EventName <b>User:</b> @e.UserName <b>AdditionalData:</b> @JsonConvert.SerializeObject(e.AdditionalData)</p>
+    }
+</div>

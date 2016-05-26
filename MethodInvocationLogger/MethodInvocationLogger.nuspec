@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>MethodInvocationLogger</id>
+    <version>1.21.0</version>
+    <title>Method's invocation logger</title>
+    <authors>Jacek Studzinski</authors>
+    <owners>Jacek Studzinski</owners>
+    <projectUrl>https://github.com/jackstu/MethodInvocationLogger</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Logging of method's executions in aspect approach</description>
+    <copyright>Copyright 2016</copyright>
+    <tags>log aspect Cross-cutting concern</tags>
+  </metadata>
+</package>
