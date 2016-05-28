@@ -48,7 +48,7 @@ First you need to pick a class which will carry information about method's invoc
 
 Then you have to pick a logger output. There are two sample writers in this repository.
 
-- `ElasticSearchLogWriter`, which writes logs into `ElasticSearch` server. With `Kibana` you can create very useful real-time dashboards ( [XXX] - this is a performance monitor of a microservice in a big commercial system which I am working on)
+- `ElasticSearchLogWriter`, which writes logs into `ElasticSearch` server. With `Kibana` you can create very useful real-time dashboards ( [http://i.imgur.com/ONPB1fe.png] - this is a performance monitor of a microservice in a big commercial system which I am working on)
 
 - `SqlDataWriter` - usefull for giving business events to BI warehouse.
 
