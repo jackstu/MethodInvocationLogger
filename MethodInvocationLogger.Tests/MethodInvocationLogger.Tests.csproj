@@ -82,10 +82,6 @@
       <Project>{ba15365e-78a4-475f-8fb3-f92d7f10b162}</Project>
       <Name>MethodInvocationLogger.Castle</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MethodInvocationLogger.ElasticSearch\MethodInvocationLogger.ElasticSearch.csproj">
-      <Project>{00980c8d-e10b-4ed9-9a18-946dcb07654e}</Project>
-      <Name>MethodInvocationLogger.ElasticSearch</Name>
-    </ProjectReference>
     <ProjectReference Include="..\MethodInvocationLogger\MethodInvocationLogger.csproj">
       <Project>{847bc773-18d7-4aa3-80ba-68d724236ee7}</Project>
       <Name>MethodInvocationLogger</Name>
