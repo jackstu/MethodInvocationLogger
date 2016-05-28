@@ -7,7 +7,7 @@ The most important advantage is separation of concerns - logging is completly se
 // log execution of PutSomeData method in SomeApiClient
 logger.LogInvocationOf<SomeApiClient>(t => t.PutSomeData(Input.Param<FormData>("formData"), Input.Param<Data>()))
 				.WithInvocationTime() // log time of execution
-				.WithInvocationDuration() // log duration of execution 
+				.WithExecutionDuration() // log duration of execution 
 				.WithAllArguments() // log every argument of a method
 				.WithMethodName() // log name of a method
 				.WithAdditionalData<int, IUserContext>((context, data) => context.UserId, "UserId") // log userId from current user context
