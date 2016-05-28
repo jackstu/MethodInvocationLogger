@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Methodinvocationlogger by jackstu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Methodinvocationlogger</h1>
+      <h2 class="project-tagline">Real cross-cutting logger. No more interferance with business code</h2>
+      <a href="https://github.com/jackstu/MethodInvocationLogger" class="btn">View on GitHub</a>
+      <a href="https://github.com/jackstu/MethodInvocationLogger/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/jackstu/MethodInvocationLogger/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="methodinvocationlogger" class="anchor" href="#methodinvocationlogger" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>MethodInvocationLogger</h1>
+
+<p>This library allows to log invocations of specified methods declared in classes which instances are resolved using dependency injection. Currently <code>Castle.Windsor</code> is the only supported container, but I plan to add others. Logger could be usefull in application performance monitor (analyzing duration of method execution), creating events for BI and many others because logs output could be anything. 
+The most important advantage is separation of concerns - logging is completly separated from business logic.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-c">// log execution of PutSomeData method in SomeApiClient</span>
+logger.LogInvocationOf&lt;SomeApiClient&gt;(t =&gt; t.PutSomeData(Input.Param&lt;FormData&gt;(<span class="pl-s"><span class="pl-pds">"</span>formData<span class="pl-pds">"</span></span>), Input.Param&lt;Data&gt;()))
+                .WithInvocationTime() <span class="pl-c">// log time of execution</span>
+                .WithExecutionDuration() <span class="pl-c">// log duration of execution </span>
+                .WithAllArguments() <span class="pl-c">// log every argument of a method</span>
+                .WithMethodName() <span class="pl-c">// log name of a method</span>
+                .WithAdditionalData&lt;<span class="pl-k">int</span>, IUserContext&gt;((context, data) =&gt; context.UserId, <span class="pl-s"><span class="pl-pds">"</span>UserId<span class="pl-pds">"</span></span>) <span class="pl-c">// log userId from current user context</span>
+                .OnlyIfSucceeded() <span class="pl-c">// log only if method succeeded</span>
+                .OnCondition((container, data) =&gt; data.Arguments.Get&lt;FormData&gt;(<span class="pl-s"><span class="pl-pds">"</span>formData<span class="pl-pds">"</span></span>).FormType != FormType.FormABC); <span class="pl-c">// log only for specifed input</span></pre></div>
+
+<h2>
+<a id="usage" class="anchor" href="#usage" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage</h2>
+
+<p>Install logger using following NuGet command:</p>
+
+<pre><code>  PM&gt; Install-Package MethodInvocationLogger.Castle
+</code></pre>
+
+<p>This will install two packages: <code>MethodInvocationLogger</code> and <code>MethodInvocationLogger.Castle</code></p>
+
+<p>Let's say you've got a Component class with Test() and Test(int x) methods.</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">interface</span> <span class="pl-en">IComponent</span>
+{
+    <span class="pl-k">void</span> <span class="pl-en">Test</span>();
+    <span class="pl-k">void</span> <span class="pl-en">Test</span>(<span class="pl-k">int</span> <span class="pl-smi">x</span>);
+}
+
+<span class="pl-k">class</span> <span class="pl-en">TestComponent</span> : <span class="pl-k">IComponent</span>
+{
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Test</span>()
+    {
+        <span class="pl-c">// some stuff</span>
+    }
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">Test</span>(<span class="pl-k">int</span> <span class="pl-smi">x</span>)
+    {
+        <span class="pl-c">// some stuff</span>
+    }
+}</pre></div>
+
+<p>and you want log every invocation of <code>Test()</code> and <code>Test(int x)</code> methods.</p>
+
+<p>First you need to pick a class which will carry information about method's invocations. You could create your own class or use universal <code>DictionaryLogData</code> supplied by the library. Actually, it is a simple <code>Dictionary&lt;string, object&gt;</code></p>
+
+<p>Then you have to pick a logger output. There are two sample writers in this repository.</p>
+
+<ul>
+<li><p><code>ElasticSearchLogWriter</code>, which writes logs into <code>ElasticSearch</code> server. With <code>Kibana</code> you can create very useful real-time dashboards ( [XXX] - this is a performance monitor of a microservice in a big commercial system which I am working on)</p></li>
+<li><p><code>SqlDataWriter</code> - usefull for giving business events to BI warehouse.</p></li>
+</ul>
+
+<p>Although for this example it will be simple custom console writer</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">class</span> <span class="pl-en">ConsoleOutput</span> : <span class="pl-k">ILogOutput</span>&lt;<span class="pl-k">DictionaryLogData</span>&gt;
+{
+    <span class="pl-k">public</span> <span class="pl-k">void</span> <span class="pl-en">WriteLog</span>(<span class="pl-k">DictionaryLogData</span> <span class="pl-smi">logData</span>)
+    {
+        Console.WriteLine(DateTime.Now + <span class="pl-s"><span class="pl-pds">"</span> - <span class="pl-pds">"</span></span> + <span class="pl-k">string</span>.Join(<span class="pl-s"><span class="pl-pds">"</span> <span class="pl-pds">"</span></span>, logData.Select(i =&gt; i.Key + <span class="pl-s"><span class="pl-pds">"</span>:<span class="pl-pds">"</span></span> + i.Value)));
+    }
+}</pre></div>
+
+<p>Now you've got everything you need to create and initialize a logger</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">var</span> logger = LoggerFactory.Create&lt;DictionaryLogData&gt;()
+        .WriteTo(<span class="pl-k">new</span> ConsoleOutput())
+        .BindToWindsor(container.Kernel);</pre></div>
+
+<p>Configure logger to log every execution of <code>Test()</code> and <code>Test(int x)</code> methods in <code>Component</code></p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test());
+logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test(Input.Param&lt;<span class="pl-k">int</span>&gt;()));</pre></div>
+
+<p>It is important to configure logger (set up methods you want to log) before you register components in a container. To be sure that everything is ok you should execute <code>Validate()</code> after you configured logger and registered components in a container.</p>
+
+<div class="highlight highlight-source-cs"><pre>container.Register(Component.For&lt;IComponent&gt;().ImplementedBy&lt;TestComponent&gt;());
+logger.Validate(container.Kernel);</pre></div>
+
+<p>This method will throw an exception if something is wrong with logger configuration.</p>
+
+<p>Now if you resolve <code>TestComponent</code> from a container and execute <code>Test()</code></p>
+
+<div class="highlight highlight-source-cs"><pre>container.Resolve&lt;IComponent&gt;().Test();</pre></div>
+
+<p>a method <code>WriteLog()</code> in <code>ConsoleOutput</code> will be invoked and print a message:</p>
+
+<pre><code>2016-05-28 09:59:04 -
+</code></pre>
+
+<p>So, method's invocation was logged but <code>ConsoleOutput</code> was given empty <code>logData</code>. To fulfill this object you need to set <code>PrepareLogData</code> action in a logger configuration for specified method. For example:</p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test())
+        .PrepareLogData((container1, invocationData, logData) =&gt;
+        {
+            logData[<span class="pl-s"><span class="pl-pds">"</span>duration<span class="pl-pds">"</span></span>] = invocationData.Raw.Duration;
+        });</pre></div>
+
+<p><code>PrepareLogData</code> action will be executed after specified method finished. It has 3 arguments.</p>
+
+<ul>
+<li>
+<code>container</code> - abstraction of a dependency injection container, which allows to resolving components.</li>
+<li>
+<code>invocationData</code> - contains informations about invoked method: passed arguments, duration of execution, exception if method failed, returned value, instance of an object on which method was executed and few others</li>
+<li>
+<code>logData</code> - an object which will be passed to <code>LogOutput</code>.</li>
+</ul>
+
+<p>You could set as many <code>PrepareLogData</code> actions as you want. They will execute synchronously. If you discover that some of them are duplicated for many methods you want to log, it is useful to create extension methods from them. For example if you often want to log currently logged user</p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test())                
+                .PrepareLogData((container1, invocationData, logData) =&gt;
+                {
+                    IUserContext userContext = container1.Resolve&lt;IUserContext&gt;();
+                    logData[<span class="pl-s"><span class="pl-pds">"</span>LoggedUser<span class="pl-pds">"</span></span>] = userContext.UserName;
+                    container1.Release(userContext);
+                });
+logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test(Input.Param&lt;<span class="pl-k">int</span>&gt;())
+                .PrepareLogData((container1, invocationData, logData) =&gt;
+                {
+                    IUserContext userContext = container1.Resolve&lt;IUserContext&gt;();
+                    logData[<span class="pl-s"><span class="pl-pds">"</span>LoggedUser<span class="pl-pds">"</span></span>] = userContext.UserName;
+                    container1.Release(userContext);
+                });</pre></div>
+
+<p>You could create an extension method</p>
+
+<div class="highlight highlight-source-cs"><pre><span class="pl-k">public</span> <span class="pl-k">static</span> <span class="pl-k">class</span> <span class="pl-en">ExtensionMethods</span>
+{
+        <span class="pl-k">public</span> <span class="pl-k">static</span> MethodInvocationLoggingConfiguration&lt;DictionaryLogData&gt; <span class="pl-en">WithCurrentUserName</span>(
+            <span class="pl-k">this</span> <span class="pl-smi">MethodInvocationLoggingConfiguration</span>&lt;DictionaryLogData&gt; config)
+        {
+            <span class="pl-k">return</span> config.PrepareLogData(((container, invocationData, logData) =&gt;
+              {
+                IUserContext userContext = container.Resolve&lt;IUserContext&gt;();
+                  logData[<span class="pl-s"><span class="pl-pds">"</span>LoggedUser<span class="pl-pds">"</span></span>] = userContext.UserName;
+                  container.Release(userContext);
+              }));
+        }
+}</pre></div>
+
+<p>and use it like this</p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test())
+                .WithCurrentUserName()
+logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test(Input.Param&lt;<span class="pl-k">int</span>&gt;())
+                .WithCurrentUserName()</pre></div>
+
+<p>If you are using <code>DictionaryLogData</code> you could use many predefined extension methods from <code>MethodInvocationLogger.Extensions</code> namespace.</p>
+
+<h2>
+<a id="filters" class="anchor" href="#filters" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Filters</h2>
+
+<p>If there is a need to log method invocation only in certain circumstances, you could use <code>OnCondition</code> function. Let say that you want to log invocation of method <code>Test(int x)</code> only if <code>x</code> is more than <code>10</code></p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test(Input.Param&lt;<span class="pl-k">int</span>&gt;())
+    .OnCondition((container1, data) =&gt; data.Arguments.Get&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>x<span class="pl-pds">"</span></span>) &gt; <span class="pl-c1">10</span>);</pre></div>
+
+<p>Here <code>data</code> is the same object as in the <code>PrepareLogData</code> action and same as with <code>PrepareLogData</code> it's useful to aggregate <code>OnCondition</code> functions using extension methods, which makes configuring logger nice and fluent.</p>
+
+<h2>
+<a id="naming-arguments" class="anchor" href="#naming-arguments" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Naming arguments</h2>
+
+<p>You could retrieve arguments by their names (like in the example above) or by index. Retrieving by names could be risky because if you change argument's name in a method signature and forget to update it in a logger configuration, there will be no compilation error but method will throw an exception. To prevent this you can name arguments in a logging scope using <code>Input.Param&lt;int&gt;(string name)</code></p>
+
+<div class="highlight highlight-source-cs"><pre>logger.LogInvocationOf&lt;TestComponent&gt;(c =&gt; c.Test(Input.Param&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>ourParamName<span class="pl-pds">"</span></span>))
+    .OnCondition((container1, data) =&gt; data.Arguments.Get&lt;<span class="pl-k">int</span>&gt;(<span class="pl-s"><span class="pl-pds">"</span>ourParamName<span class="pl-pds">"</span></span>) &gt; <span class="pl-c1">10</span>);</pre></div>
+
+<p>Now it doesn't matter what names have parameters in method signature.</p>
+
+<h2>
+<a id="demo" class="anchor" href="#demo" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Demo</h2>
+
+<p>There is a demo web aplication in a repository (<code>MethodInvocationLogger.Demo</code>), which is an example of using loggers as a performance tool and as business event generator. The logging code is in <code>global.asax.cs</code> file.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/jackstu/MethodInvocationLogger">Methodinvocationlogger</a> is maintained by <a href="https://github.com/jackstu">jackstu</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
