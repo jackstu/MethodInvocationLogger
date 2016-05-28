@@ -45,13 +45,13 @@ namespace MethodInvocationLogger.Castle.Tests
 		private void RunTestAndCheckIfOneItemLogged(Action<ILogger<object>, WindsorContainer> testAction)
 		{
 			WindsorContainer container = new WindsorContainer();
-			TestLogWriter<object> logWriter = new TestLogWriter<object>();
-			ILogger<object> logger = LoggerFactory.Create<object>().WriteTo(logWriter);
+			TestLogOutput<object> logOutput = new TestLogOutput<object>();
+			ILogger<object> logger = LoggerFactory.Create<object>().WriteTo(logOutput);
 			logger.BindToWindsor(container.Kernel);
 
 			testAction(logger, container);
 
-			Assert.AreEqual(1, logWriter.LogDataCount);
+			Assert.AreEqual(1, logOutput.LogDataCount);
 		}
 
 		public class InvocationTestClass : IInvocationTestClass

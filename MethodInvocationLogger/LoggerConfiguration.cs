@@ -7,14 +7,14 @@ namespace MethodInvocationLogger
 {
 	internal class LoggerConfiguration<TLogData>
 	{
-		internal ILogWriter<TLogData> LogWriter { get; private set; }
+		internal ILogOutput<TLogData> LogOutput { get; private set; }
 
 		private readonly Dictionary<MethodInfo, List<MethodInvocationLoggingConfiguration<TLogData>>> _methodConfigs = new Dictionary<MethodInfo, List<MethodInvocationLoggingConfiguration<TLogData>>>();
 		private readonly HashSet<Type> _registeredTypes = new HashSet<Type>();
 
-		public void SetWriter(ILogWriter<TLogData> logWriter)
+		public void SetWriter(ILogOutput<TLogData> logOutput)
 		{
-			LogWriter = logWriter;
+			LogOutput = logOutput;
 		}
 
 		internal bool TypeRegistered(Type type)

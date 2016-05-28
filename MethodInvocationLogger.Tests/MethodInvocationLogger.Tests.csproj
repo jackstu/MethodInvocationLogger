@@ -75,7 +75,7 @@
     <Compile Include="MethodInfoMatchingTests.cs" />
     <Compile Include="PrepareLogDataTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Helpers\TestLogWriter.cs" />
+    <Compile Include="Helpers\TestLogOutput.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MethodInvocationLogger.Castle\MethodInvocationLogger.Castle.csproj">

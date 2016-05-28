@@ -52,7 +52,7 @@
     <Compile Include="IContainer.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="ILoggerInternal.cs" />
-    <Compile Include="ILogWriter.cs" />
+    <Compile Include="ILogOutput.cs" />
     <Compile Include="Input.cs" />
     <Compile Include="InvocationData.cs" />
     <Compile Include="InvocationRawData.cs" />

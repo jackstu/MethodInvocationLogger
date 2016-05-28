@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace MethodInvocationLogger.Tests.Helpers
 {
-	public class TestLogWriter<TLogData> : ILogWriter<TLogData>
+	public class TestLogOutput<TLogData> : ILogOutput<TLogData>
 	{
 		readonly List<TLogData> _logs = new List<TLogData>();
 

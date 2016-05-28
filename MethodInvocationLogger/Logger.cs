@@ -22,9 +22,9 @@ namespace MethodInvocationLogger
 			return this;
 		}
 
-		public ILogger<TLogData> WriteTo(ILogWriter<TLogData> logWriter)
+		public ILogger<TLogData> WriteTo(ILogOutput<TLogData> logOutput)
 		{
-			_config.SetWriter(logWriter);
+			_config.SetWriter(logOutput);
 			return this;
 		}
 
@@ -45,7 +45,7 @@ namespace MethodInvocationLogger
 			if (_container == null)
 				result.AddError("Container not set.");
 
-			if (_config.LogWriter == null)
+			if (_config.LogOutput == null)
 				result.AddError("Writer not set.");
 
 			foreach (MethodInfo method in _config.GetRegisteredMethods())
@@ -62,13 +62,13 @@ namespace MethodInvocationLogger
 
 		public void ProcessInvocationData(InvocationRawData invocationRawData)
 	    {
-		    if (_config.LogWriter == null)
+		    if (_config.LogOutput == null)
 			    throw new WriterNotSetException();
 
 		    foreach (var methodConfig in _config.GetConfigsForMethod(invocationRawData.MethodInfo))
 		    {
 				if (methodConfig.ShouldBeLogged(_container, invocationRawData))
-					_config.LogWriter.WriteLog(methodConfig.CreateLogData(_container, invocationRawData));
+					_config.LogOutput.WriteLog(methodConfig.CreateLogData(_container, invocationRawData));
 		    }
 		}
     }

@@ -4,7 +4,7 @@ using Nest;
 
 namespace MethodInvocationLogger.ElasticSearch
 {
-    public class ElasticLogWriter : ILogWriter<DictionaryLogData>
+    public class ElasticLogWriter : ILogOutput<DictionaryLogData>
     {
 	    private readonly Uri _uri;
 

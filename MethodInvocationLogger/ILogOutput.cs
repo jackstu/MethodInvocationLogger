@@ -1,6 +1,6 @@
 namespace MethodInvocationLogger
 {
-	public interface ILogWriter<in TLogData>
+	public interface ILogOutput<in TLogData>
 	{
 		void WriteLog(TLogData logData);
 	}

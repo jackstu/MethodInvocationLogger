@@ -59,7 +59,7 @@ namespace MethodInvocationLogger.Tests
 			RunTestAndCheckFirstLogDataWritten((container, logger) =>
 			{
 				logger.LogInvocationOf<InvocationTestClass>(m => m.TestMethod())
-					.WithInvocationDuration()
+					.WithExecutionDuration()
 					.PrepareLogData((container1, data, logData) => invocationDuration = data.Raw.Duration);
 				RegisterAndResolveComponent<InvocationTestClass>(container).TestMethod();
 			}
@@ -79,7 +79,7 @@ namespace MethodInvocationLogger.Tests
 			RunTestAndCheckFirstLogDataWritten((container, logger) =>
 			{
 				logger.LogInvocationOf<InvocationTestClass>(m => m.TestMethod())
-					.WithInvocationDuration(dataKeyName)
+					.WithExecutionDuration(dataKeyName)
 					.PrepareLogData((container1, data, logData) => invocationDuration = data.Raw.Duration);
 				RegisterAndResolveComponent<InvocationTestClass>(container).TestMethod();
 			}

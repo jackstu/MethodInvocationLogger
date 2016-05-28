@@ -12,8 +12,8 @@ namespace MethodInvocationLogger.Castle.Tests
 		public void DecoratorsMethodsShouldBeLoggable()
 		{
 			WindsorContainer container = new WindsorContainer();
-			TestLogWriter<object> logWriter = new TestLogWriter<object>();
-			ILogger<object> logger = LoggerFactory.Create<object>().WriteTo(logWriter);
+			TestLogOutput<object> logOutput = new TestLogOutput<object>();
+			ILogger<object> logger = LoggerFactory.Create<object>().WriteTo(logOutput);
 			logger.BindToWindsor(container.Kernel);
 
 			logger.LogInvocationOf<TestClass>(t => t.TestMethod());
@@ -24,7 +24,7 @@ namespace MethodInvocationLogger.Castle.Tests
 
 			container.Resolve<ITest>().TestMethod();
 
-			Assert.AreEqual(2, logWriter.LogDataCount);
+			Assert.AreEqual(2, logOutput.LogDataCount);
 		}
 
 		public class TestClass : ITest

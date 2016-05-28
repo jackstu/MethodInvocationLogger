@@ -36,7 +36,7 @@ namespace MethodInvocationLogger.Demo
 			var businessEventsLogger = LoggerFactory.Create<BusinessEvent>()
 				.BindToWindsor(_container.Kernel)
 				// logs will be written into businessEventsList collection
-				.WriteTo(new BusinessEventLogWriter(businessEventsList));
+				.WriteTo(new BusinessEventLogOutput(businessEventsList));
 
 			// Log event when user click "Enable cyclic api caller" button and controller's method would not throw exception
 			// With event we want to store current time and user's name from current context
@@ -73,12 +73,12 @@ namespace MethodInvocationLogger.Demo
 			// create and initialize logger for performance monitor. We are using DictionaryLogData supplied by MethodInvocationLogger.Extensions.
 			var performanceLogger = LoggerFactory.Create<DictionaryLogData>()
 				.BindToWindsor(_container.Kernel)
-				.WriteTo(new PerformanceLogWriter(performanceItemsList)); // logs will be written into performanceItemsList collection 
+				.WriteTo(new PerformanceLogOutput(performanceItemsList)); // logs will be written into performanceItemsList collection 
 
 			// log every execution of PutSomeData method in SomeApiClient
 			performanceLogger.LogInvocationOf<SomeApiClient>(t => t.PutSomeData(Input.Param<string>(), Input.Param<Data>()))
 				.WithInvocationTime() // log time of the exection
-				.WithInvocationDuration() // log duration of execution 
+				.WithExecutionDuration() // log duration of execution 
 				.WithAllArguments() // log every argument of the method
 				.WithMethodName() // log method name
 				.WithAdditionalData<int, IUserContext>((context, data) => context.UserId, "UserId") // log userId from current user context
@@ -89,7 +89,7 @@ namespace MethodInvocationLogger.Demo
 			performanceLogger.LogInvocationOf<SomeApiClient>(t => t.GetSomeData())
 				.WithEverythingNecessaryForPerformanceMonitor()
 				.WithReturnedValue(); // and method's returned value
-
+			
 			#endregion
 
 
@@ -118,7 +118,7 @@ namespace MethodInvocationLogger.Demo
 		{
 			return config
 				.WithInvocationTime()
-				.WithInvocationDuration()
+				.WithExecutionDuration()
 				.WithAllArguments()
 				.WithMethodName()
 				.WithAdditionalData<int, IUserContext>((context, data) => context.UserId, "UserId")
@@ -186,11 +186,11 @@ namespace MethodInvocationLogger.Demo
 		public Dictionary<string, object> AdditionalData { get; set; } = new Dictionary<string, object>();
 	}
 
-	public class BusinessEventLogWriter : ILogWriter<BusinessEvent>
+	public class BusinessEventLogOutput : ILogOutput<BusinessEvent>
 	{
 		private readonly BusinessEventsList _eventStorage;
 
-		public BusinessEventLogWriter(BusinessEventsList eventStorage)
+		public BusinessEventLogOutput(BusinessEventsList eventStorage)
 		{
 			_eventStorage = eventStorage;
 		}
@@ -201,11 +201,11 @@ namespace MethodInvocationLogger.Demo
 		}
 	}
 
-	public class PerformanceLogWriter : ILogWriter<DictionaryLogData>
+	public class PerformanceLogOutput : ILogOutput<DictionaryLogData>
 	{
 		private readonly PerformanceItemsList _storage;
 
-		public PerformanceLogWriter(PerformanceItemsList storage)
+		public PerformanceLogOutput(PerformanceItemsList storage)
 		{
 			_storage = storage;
 		}

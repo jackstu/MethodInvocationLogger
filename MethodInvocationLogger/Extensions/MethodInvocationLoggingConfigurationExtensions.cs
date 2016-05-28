@@ -16,12 +16,12 @@ namespace MethodInvocationLogger.Extensions
 			return config.PrepareLogData(((container, invocationData, logData) => logData[dataKeyName] = invocationData.Raw.Begin));
 		}
 
-		public static MethodInvocationLoggingConfiguration<DictionaryLogData> WithInvocationDuration(this MethodInvocationLoggingConfiguration<DictionaryLogData> config)
+		public static MethodInvocationLoggingConfiguration<DictionaryLogData> WithExecutionDuration(this MethodInvocationLoggingConfiguration<DictionaryLogData> config)
 		{
-			return WithInvocationDuration(config, "Duration");
+			return WithExecutionDuration(config, "Duration");
 		}
 
-		public static MethodInvocationLoggingConfiguration<DictionaryLogData> WithInvocationDuration(
+		public static MethodInvocationLoggingConfiguration<DictionaryLogData> WithExecutionDuration(
 			this MethodInvocationLoggingConfiguration<DictionaryLogData> config, string dataKeyName)
 		{
 			return config.PrepareLogData(((container, invocationData, logData) => logData[dataKeyName] = invocationData.Raw.Duration));

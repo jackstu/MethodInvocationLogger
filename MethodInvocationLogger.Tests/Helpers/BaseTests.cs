@@ -9,15 +9,15 @@ namespace MethodInvocationLogger.Tests.Helpers
 	{
 		protected abstract Func<ILogger<TLogData>, IContainer> PrepareLoggerAndGetContainer { get; }
 
-		protected void RunTest(Action<IContainer, ILogger<TLogData>> runAction, Action<TestLogWriter<TLogData>> checkResults = null)
+		protected void RunTest(Action<IContainer, ILogger<TLogData>> runAction, Action<TestLogOutput<TLogData>> checkResults = null)
 		{
-			TestLogWriter<TLogData> logWriter = new TestLogWriter<TLogData>();
-			ILogger<TLogData> logger = LoggerFactory.Create<TLogData>().WriteTo(logWriter);
+			TestLogOutput<TLogData> logOutput = new TestLogOutput<TLogData>();
+			ILogger<TLogData> logger = LoggerFactory.Create<TLogData>().WriteTo(logOutput);
 
 			using (IContainer container = PrepareLoggerAndGetContainer(logger))
 			{
 				runAction(container, logger);
-				checkResults?.Invoke(logWriter);
+				checkResults?.Invoke(logOutput);
 			}
 		}
 
