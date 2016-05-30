@@ -22,6 +22,9 @@ namespace MethodInvocationLogger.Castle
 
 		public void ProcessModel(IKernel kernel, ComponentModel model)
 		{
+			if (ProcessedImplementations.ContainsKey(model.Implementation))
+				return;
+
 			ImplementationInfo implementationInfo = new ImplementationInfo(model.Implementation);
 
 			if ((_compositeLoggerInternal.TypeRegistered(model.Implementation))

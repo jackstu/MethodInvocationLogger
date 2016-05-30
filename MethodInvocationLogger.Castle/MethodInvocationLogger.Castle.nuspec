@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MethodInvocationLogger.Castle</id>
-    <version>1.21.0</version>
+    <version>1.23.0</version>
     <title>Method invocation logger for Castle Windsor container</title>
     <authors>Jacek Studzinski</authors>
     <owners>Jacek Studzinski</owners>
