@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MethodInvocationLogger.Demo.Controllers
+namespace MethodInvocationLogger.Demo.Core
 {
 	public class CyclicApiCaller
 	{

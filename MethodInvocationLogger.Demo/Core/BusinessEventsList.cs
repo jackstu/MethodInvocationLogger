@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace MethodInvocationLogger.Demo.Controllers
+namespace MethodInvocationLogger.Demo.Core
 {
 	public class BusinessEventsList
 	{

@@ -55,6 +55,11 @@ namespace MethodInvocationLogger.Castle.Tests.MethodInfoRequirements
 		}
 	}
 
+	internal class InternalTestClass
+	{
+		public void TestMethod() { }
+	}
+
 	public class PublicTestClass
 	{
 		public class NestedPublicClass
@@ -62,11 +67,6 @@ namespace MethodInvocationLogger.Castle.Tests.MethodInfoRequirements
 			public void TestMethod() { }
 		}
 
-		public void TestMethod() { }
-	}
-
-	internal class InternalTestClass
-	{
 		public void TestMethod() { }
 	}
 }

@@ -27,3 +27,7 @@
 /.vs/config/applicationhost.config
 /MethodInvocationLogger/CreateNuGetPackage.bat
 /MethodInvocationLogger.Castle/CreateNuGetPackage.bat
+/MethodInvocationLogger/bin/Debug
+/MethodInvocationLogger.SampleWriters/bin/Release
+/MethodInvocationLogger.SampleWriters/obj/Release
+/MethodInvocationLogger/obj/Debug

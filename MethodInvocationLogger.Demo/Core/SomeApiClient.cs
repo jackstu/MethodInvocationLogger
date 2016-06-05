@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace MethodInvocationLogger.Demo.Controllers
+namespace MethodInvocationLogger.Demo.Core
 {
 	public class SomeApiClient : ISomeApiClient
 	{

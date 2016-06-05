@@ -1,8 +1,5 @@
 ﻿using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using Castle.Core;
-using Castle.Core.Internal;
 using Castle.MicroKernel;
 using MethodInvocationLogger.Exceptions;
 

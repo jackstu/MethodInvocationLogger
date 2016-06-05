@@ -1,10 +1,9 @@
 using System;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using Castle.Windsor;
 
-namespace MethodInvocationLogger.Demo.Plumbing
+namespace MethodInvocationLogger.Demo
 {
     public class WindsorControllerFactory : DefaultControllerFactory
     {

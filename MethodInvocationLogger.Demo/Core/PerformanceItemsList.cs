@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MethodInvocationLogger.Extensions;
 
-namespace MethodInvocationLogger.Demo.Controllers
+namespace MethodInvocationLogger.Demo.Core
 {
 	public class PerformanceItemsList
 	{

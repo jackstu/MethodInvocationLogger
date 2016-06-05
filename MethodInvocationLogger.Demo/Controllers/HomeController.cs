@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Web;
-using System.Web.Helpers;
-using System.Web.Management;
 using System.Web.Mvc;
+using MethodInvocationLogger.Demo.Core;
 using Newtonsoft.Json;
 
 namespace MethodInvocationLogger.Demo.Controllers

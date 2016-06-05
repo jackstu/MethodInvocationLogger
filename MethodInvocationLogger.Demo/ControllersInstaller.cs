@@ -3,11 +3,9 @@ using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
 
-namespace MethodInvocationLogger.Demo.Installers
+namespace MethodInvocationLogger.Demo
 {
-    using Plumbing;
-
-    public class ControllersInstaller : IWindsorInstaller
+	public class ControllersInstaller : IWindsorInstaller
     {
         public void Install(IWindsorContainer container, IConfigurationStore store)
         {

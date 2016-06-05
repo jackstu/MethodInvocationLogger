@@ -1,8 +1,6 @@
 using System;
-using System.Reflection;
 using MethodInvocationLogger.Castle.MethodInfoRequirements;
 using MethodInvocationLogger.Castle.Tests.Helpers;
-using NUnit.Core;
 using NUnit.Framework;
 
 namespace MethodInvocationLogger.Castle.Tests.MethodInfoRequirements

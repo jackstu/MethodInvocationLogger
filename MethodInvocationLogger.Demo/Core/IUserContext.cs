@@ -1,4 +1,4 @@
-﻿namespace MethodInvocationLogger.Demo
+﻿namespace MethodInvocationLogger.Demo.Core
 {
 	public interface IUserContext
 	{

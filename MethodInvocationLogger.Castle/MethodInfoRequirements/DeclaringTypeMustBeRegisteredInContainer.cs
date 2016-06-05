@@ -1,6 +1,4 @@
-using System.Linq;
 using System.Reflection;
-using Castle.Core;
 using Castle.MicroKernel;
 
 namespace MethodInvocationLogger.Castle.MethodInfoRequirements

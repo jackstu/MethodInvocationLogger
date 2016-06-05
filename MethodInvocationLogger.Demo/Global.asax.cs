@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -10,9 +7,8 @@ using Castle.MicroKernel.Registration;
 using Castle.Windsor;
 using MethodInvocationLogger.Castle;
 using MethodInvocationLogger.Demo.Controllers;
-using MethodInvocationLogger.Demo.Plumbing;
+using MethodInvocationLogger.Demo.Core;
 using MethodInvocationLogger.Extensions;
-using Newtonsoft.Json;
 
 namespace MethodInvocationLogger.Demo
 {

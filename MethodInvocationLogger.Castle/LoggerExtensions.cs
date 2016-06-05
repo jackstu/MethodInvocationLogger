@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 using Castle.MicroKernel;
 using Castle.MicroKernel.Registration;
 using MethodInvocationLogger.Castle.MethodInfoRequirements;
