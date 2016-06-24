@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	
+	<PropertyGroup Condition="$(Configuration) == 'NET45-Release' or $(Configuration) == 'NET45-Debug'">
+		<CastleCoreDllLib>NET45</CastleCoreDllLib>
+		<CastleWindsorDllLib>NET45</CastleWindsorDllLib>
+		<TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(Configuration) == 'NET40-Release' or $(Configuration) == 'NET40-Debug'">
+		<CastleCoreDllLib>NET40-client</CastleCoreDllLib>
+		<CastleWindsorDllLib>NET40-client</CastleWindsorDllLib>
+		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(Configuration) == 'NET40CP-Release' or $(Configuration) == 'NET40CP-Debug'">
+		<CastleCoreDllLib>NET40-client</CastleCoreDllLib>
+		<CastleWindsorDllLib>NET40-client</CastleWindsorDllLib>		
+		<TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+		<TargetFrameworkProfile>Client</TargetFrameworkProfile>
+	</PropertyGroup>
+
+	<PropertyGroup Condition="$(Configuration) == 'NET35-Release' or $(Configuration) == 'NET35-Debug'">
+		<CastleCoreDllLib>NET35</CastleCoreDllLib>
+		<CastleWindsorDllLib>NET35</CastleWindsorDllLib>		
+		<TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+	</PropertyGroup>
+		
+	<!-- Run user targets last -->
+<!--	<Import Condition="Exists('$(RootPath)/Common.User.Targets')" Project="$(RootPath)/Common.User.Targets" />-->
+
+</Project>

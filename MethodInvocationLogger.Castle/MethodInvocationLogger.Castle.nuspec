@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MethodInvocationLogger.Castle</id>
-    <version>1.24.0</version>
+    <version>1.25.0</version>
     <title>Method invocation logger for Castle Windsor container</title>
     <authors>Jacek Studzinski</authors>
     <owners>Jacek Studzinski</owners>
@@ -12,9 +12,15 @@
     <copyright>Copyright 2016</copyright>
     <tags>log aspect Cross-cutting concern castle windsor</tags>
     <dependencies>
-      <dependency id="MethodInvocationLogger" version="1.21.0" />
+      <dependency id="MethodInvocationLogger" version="1.25.0" />
       <dependency id="Castle.Core" version="3.3.0" />
       <dependency id="Castle.Windsor" version="3.3.0" />
     </dependencies>
   </metadata>
+  <files>
+    <file src="bin/NET35-Release/MethodInvocationLogger.Castle.dll" target="lib/net35" />
+    <file src="bin/NET40-Release/MethodInvocationLogger.Castle.dll" target="lib/net40" />
+    <file src="bin/NET40CP-Release/MethodInvocationLogger.Castle.dll" target="lib/net40-client" />
+    <file src="bin/NET45-Release/MethodInvocationLogger.Castle.dll" target="lib/net45" />
+  </files>
 </package>

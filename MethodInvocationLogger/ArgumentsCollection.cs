@@ -22,7 +22,7 @@ namespace MethodInvocationLogger
 
 		public object Get(string name)
 		{
-			if (string.IsNullOrWhiteSpace(name))
+			if (string.IsNullOrEmpty(name))
 				throw new ArgumentNullException(nameof(name));
 
 			int index;

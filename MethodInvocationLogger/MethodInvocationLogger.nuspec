@@ -2,8 +2,8 @@
 <package >
   <metadata>
     <id>MethodInvocationLogger</id>
-    <version>1.22.0</version>
-    <title>Method's invocation logger</title>
+    <version>1.25.0</version>
+    <title>Method invocation logger</title>
     <authors>Jacek Studzinski</authors>
     <owners>Jacek Studzinski</owners>
     <projectUrl>https://github.com/jackstu/MethodInvocationLogger</projectUrl>
@@ -12,4 +12,10 @@
     <copyright>Copyright 2016</copyright>
     <tags>log aspect Cross-cutting concern</tags>
   </metadata>
+  <files>
+    <file src="bin/NET35-Release/MethodInvocationLogger.dll" target="lib/net35" />
+    <file src="bin/NET40-Release/MethodInvocationLogger.dll" target="lib/net40" />
+    <file src="bin/NET40CP-Release/MethodInvocationLogger.dll" target="lib/net40-client" />
+    <file src="bin/NET45-Release/MethodInvocationLogger.dll" target="lib/net45" />
+  </files>
 </package>

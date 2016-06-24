@@ -31,3 +31,7 @@
 /MethodInvocationLogger.SampleWriters/bin/Release
 /MethodInvocationLogger.SampleWriters/obj/Release
 /MethodInvocationLogger/obj/Debug
+/MethodInvocationLogger/bin
+/MethodInvocationLogger/obj
+/MethodInvocationLogger.SampleWriters/bin
+/MethodInvocationLogger.SampleWriters/obj

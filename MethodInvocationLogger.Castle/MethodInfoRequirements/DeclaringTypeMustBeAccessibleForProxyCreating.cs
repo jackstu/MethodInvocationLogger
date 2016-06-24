@@ -16,13 +16,13 @@ namespace MethodInvocationLogger.Castle.MethodInfoRequirements
 
 		private static bool IsPublic(Type target)
 		{
-			return target.GetTypeInfo().IsPublic || target.GetTypeInfo().IsNestedPublic;
+			return target.IsPublic || target.IsNestedPublic;
 		}
 
 		private static bool IsInternal(Type target)
 		{
 			var isTargetNested = target.IsNested;
-			var isNestedAndInternal = isTargetNested && (target.GetTypeInfo().IsNestedAssembly || target.GetTypeInfo().IsNestedFamORAssem);
+			var isNestedAndInternal = isTargetNested && (target.IsNestedAssembly || target.IsNestedFamORAssem);
 			var isInternalNotNested = target.IsVisible == false && isTargetNested == false;
 
 			return isInternalNotNested || isNestedAndInternal;
