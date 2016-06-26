@@ -90,6 +90,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>..\BuildScripts\MethodInvocationLogger.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -125,6 +131,9 @@
     <Compile Include="Exceptions\UnknownArgumentException.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\BuildScripts\MethodInvocationLogger.snk">
+      <Link>MethodInvocationLogger.snk</Link>
+    </None>
     <None Include="MethodInvocationLogger.nuspec">
       <SubType>Designer</SubType>
     </None>

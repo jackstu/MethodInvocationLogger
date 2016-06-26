@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>MethodInvocationLogger</id>
-    <version>1.25.0</version>
+    <version>1.26.0</version>
     <title>Method invocation logger</title>
     <authors>Jacek Studzinski</authors>
     <owners>Jacek Studzinski</owners>
